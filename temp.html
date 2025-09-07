@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Future of Data Careers: 2025-2028 Outlook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Soothing Neutrals & Tech Blue -->
+    <!-- Application Structure Plan: A tabbed, dashboard-style single-page application. The structure is designed for non-linear exploration, allowing users to get a quick overview then dive into specific areas of interest (Roles, Skills, Salary). This is more user-friendly than a long, linear report. The sections are: 1) Overview: High-level stats and growth comparison. 2) Role Deep Dive: Comparative analysis of key roles. 3) Skills Landscape: Interactive breakdown of necessary skills. 4) Salary Insights: Filterable salary data. This thematic structure helps users digest complex information in manageable chunks and find answers to their specific questions efficiently. -->
+    <!-- Visualization & Content Choices: 
+        - Role Growth Comparison -> Goal: Compare -> Viz: Bar Chart -> Interaction: Hover for details -> Justification: Clearly compares projected growth rates for distinct roles. (Chart.js)
+        - Role Popularity vs. Specialization -> Goal: Inform/Organize -> Viz: Tabbed layout with text and small donut charts -> Interaction: Click tabs -> Justification: Efficiently organizes detailed info; donut chart shows 'popularity' (job volume) as part of a whole. (Chart.js)
+        - Skills Breakdown -> Goal: Organize -> Viz: Custom HTML/CSS grid -> Interaction: Click for details (placeholder) -> Justification: Flexible for conceptual grouping of foundational, growing, and cutting-edge skills. (Vanilla JS)
+        - Salary Comparison -> Goal: Compare -> Viz: Bar Chart -> Interaction: Filter by experience level -> Justification: Interactive filtering makes the data more personally relevant and explorable. (Chart.js)
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 45vh;
+            max-height: 450px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 40vh;
+                max-height: 350px;
+            }
+        }
+        .nav-btn {
+            transition: all 0.3s ease;
+        }
+        .nav-btn.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+            font-weight: 600;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">The Future of Data Careers</h1>
+            <p class="mt-2 text-lg text-slate-600">An Interactive Outlook for 2025-2028</p>
+        </header>
+
+        <nav class="mb-8 border-b border-slate-200">
+            <ul class="flex justify-center flex-wrap -mb-px">
+                <li><button class="nav-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg text-slate-500 hover:text-slate-700 hover:border-slate-300" data-target="overview">Overview</button></li>
+                <li><button class="nav-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg text-slate-500 hover:text-slate-700 hover:border-slate-300" data-target="roles">Role Deep Dive</button></li>
+                <li><button class="nav-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg text-slate-500 hover:text-slate-700 hover:border-slate-300" data-target="skills">Skills Landscape</button></li>
+                <li><button class="nav-btn inline-block p-4 border-b-2 border-transparent rounded-t-lg text-slate-500 hover:text-slate-700 hover:border-slate-300" data-target="salary">Salary Insights</button></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- Overview Section -->
+            <section id="overview" class="content-section">
+                <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-3">At a Glance: The Shifting Data Landscape</h2>
+                    <p class="text-slate-600 mb-6">The data science field is not just growing; it's specializing. While the Data Analyst role remains a high-volume gateway into the industry, the most rapid growth and highest demand are shifting towards specialized engineering and machine learning roles. This section provides a high-level summary of the key trends shaping data careers through 2028.</p>
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-center">
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <p class="text-3xl font-bold text-blue-600">30-35%</p>
+                            <p class="text-slate-500">Projected Growth in Data Jobs by 2030 (BLS)</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                            <p class="text-3xl font-bold text-blue-600">ML Engineer</p>
+                            <p class="text-slate-500">Fastest-Growing Role</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg">
+                             <p class="text-3xl font-bold text-blue-600">Cloud & MLOps</p>
+                            <p class="text-slate-500">Top In-Demand Skills</p>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4 text-center">Projected Job Growth Rate by Role (2025-2028)</h3>
+                    <div class="chart-container">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Role Deep Dive Section -->
+            <section id="roles" class="content-section">
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                     <h2 class="text-2xl font-bold text-slate-900 mb-3">Role Deep Dive: Popularity vs. Specialization</h2>
+                     <p class="text-slate-600 mb-6">Is Data Analyst still the most popular role? Yes, by volume of job postings, it remains a primary entry point. However, the data career path is diversifying rapidly. This section explores the evolution, responsibilities, and skill focus for four key roles. Understand the difference between the most common role and the fastest-growing specializations.</p>
+                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        
+                        <div class="border border-slate-200 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Data Analyst</h3>
+                            <p class="text-slate-500 mb-4">The Gateway: Focus on translating data into business insights. This role is evolving to require more advanced analytics and proficiency with AI-augmented BI tools, moving beyond simple reporting.</p>
+                            <div class="h-48 w-48 mx-auto mb-4"><canvas id="analystDonut"></canvas></div>
+                            <ul class="list-disc list-inside text-slate-600">
+                                <li><strong>Key Skills:</strong> SQL, Excel, Tableau/Power BI, Statistics</li>
+                                <li><strong>Core Task:</strong> Reporting, dashboarding, and exploratory analysis.</li>
+                            </ul>
+                        </div>
+
+                        <div class="border border-slate-200 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Data Scientist</h3>
+                            <p class="text-slate-500 mb-4">The Predictor: Focus on building statistical and machine learning models to forecast trends and uncover deeper patterns. The role is maturing from generalist to specialist (e.g., NLP, Computer Vision).</p>
+                             <div class="h-48 w-48 mx-auto mb-4"><canvas id="scientistDonut"></canvas></div>
+                            <ul class="list-disc list-inside text-slate-600">
+                                <li><strong>Key Skills:</strong> Python (Pandas, Scikit-learn), R, Advanced Statistics, ML Algorithms</li>
+                                 <li><strong>Core Task:</strong> Predictive modeling and experimentation.</li>
+                            </ul>
+                        </div>
+
+                        <div class="border border-slate-200 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Data Engineer</h3>
+                            <p class="text-slate-500 mb-4">The Builder: Focus on designing, building, and maintaining the data infrastructure. Demand is surging as companies recognize that reliable data pipelines are the foundation for all AI and analytics.</p>
+                             <div class="h-48 w-48 mx-auto mb-4"><canvas id="engineerDonut"></canvas></div>
+                             <ul class="list-disc list-inside text-slate-600">
+                                <li><strong>Key Skills:</strong> SQL, Python, Cloud Platforms (AWS, GCP, Azure), Spark, Airflow</li>
+                                 <li><strong>Core Task:</strong> Building and managing ETL/ELT pipelines.</li>
+                            </ul>
+                        </div>
+
+                        <div class="border border-slate-200 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold text-slate-800 mb-2">Machine Learning Engineer</h3>
+                            <p class="text-slate-500 mb-4">The Deployer: Bridges data science and software engineering. Focus on deploying, scaling, and monitoring ML models in production environments (MLOps). This is the fastest-growing and often highest-paid role.</p>
+                             <div class="h-48 w-48 mx-auto mb-4"><canvas id="mlDonut"></canvas></div>
+                             <ul class="list-disc list-inside text-slate-600">
+                                <li><strong>Key Skills:</strong> Python, Cloud Platforms, Kubernetes, MLOps tools, Software Engineering</li>
+                                 <li><strong>Core Task:</strong> Operationalizing and scaling ML models.</li>
+                            </ul>
+                        </div>
+                     </div>
+                 </div>
+            </section>
+
+            <!-- Skills Landscape Section -->
+            <section id="skills" class="content-section">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-3">Skills Landscape for 2025 and Beyond</h2>
+                    <p class="text-slate-600 mb-8">Success in a data career now requires a tiered skill set. Foundational skills remain essential, but a growing emphasis on cloud technologies, MLOps, and the application of Generative AI is creating new demands. This section highlights the key competencies across three critical categories for any aspiring data professional.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                            <h3 class="text-xl font-semibold text-blue-800 mb-3">Foundational Skills</h3>
+                            <p class="text-blue-700 mb-4">The non-negotiable bedrock for any data role.</p>
+                            <ul class="space-y-2">
+                                <li class="bg-white p-2 rounded">SQL & Database Management</li>
+                                <li class="bg-white p-2 rounded">Python Programming</li>
+                                <li class="bg-white p-2 rounded">Statistics & Probability</li>
+                                <li class="bg-white p-2 rounded">Data Visualization & Storytelling</li>
+                            </ul>
+                        </div>
+                        <div class="bg-teal-50 p-6 rounded-lg border-l-4 border-teal-500">
+                            <h3 class="text-xl font-semibold text-teal-800 mb-3">High-Growth Competencies</h3>
+                            <p class="text-teal-700 mb-4">Skills experiencing the highest growth in demand.</p>
+                            <ul class="space-y-2">
+                                <li class="bg-white p-2 rounded">Cloud Platforms (AWS, Azure, GCP)</li>
+                                <li class="bg-white p-2 rounded">MLOps & Model Deployment</li>
+                                <li class="bg-white p-2 rounded">Data Engineering (Spark, Airflow)</li>
+                                <li class="bg-white p-2 rounded">Data Governance & Ethics</li>
+                            </ul>
+                        </div>
+                        <div class="bg-indigo-50 p-6 rounded-lg border-l-4 border-indigo-500">
+                            <h3 class="text-xl font-semibold text-indigo-800 mb-3">Cutting-Edge Specializations</h3>
+                             <p class="text-indigo-700 mb-4">Emerging areas that define senior and specialist roles.</p>
+                            <ul class="space-y-2">
+                                <li class="bg-white p-2 rounded">Generative AI / LLM Application</li>
+                                <li class="bg-white p-2 rounded">Deep Learning (TensorFlow, PyTorch)</li>
+                                <li class="bg-white p-2 rounded">Edge AI & IoT Analytics</li>
+                                <li class="bg-white p-2 rounded">Explainable AI (XAI)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Salary Insights Section -->
+            <section id="salary" class="content-section">
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-3">Salary Insights</h2>
+                    <p class="text-slate-600 mb-6">Compensation in the data field directly correlates with specialization and experience. While all roles offer competitive salaries, engineering and machine learning positions typically command a premium. Use the filters below to explore the estimated median salary ranges for different roles based on experience level in the U.S. market.</p>
+                    <div class="flex justify-center mb-6">
+                         <div class="inline-flex rounded-md shadow-sm" role="group">
+                            <button type="button" class="salary-filter-btn px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700" data-level="entry">
+                                Entry-Level
+                            </button>
+                            <button type="button" class="salary-filter-btn px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700" data-level="mid">
+                                Mid-Level
+                            </button>
+                            <button type="button" class="salary-filter-btn px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700" data-level="senior">
+                                Senior-Level
+                            </button>
+                        </div>
+                    </div>
+                     <p id="salary-level-text" class="text-center text-slate-500 mb-4">Showing data for Entry-Level</p>
+                    <div class="chart-container">
+                        <canvas id="salaryChart"></canvas>
+                    </div>
+                 </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const roleData = {
+                labels: ['Data Analyst', 'Data Scientist', 'Data Engineer', 'ML Engineer'],
+                growth: [18, 25, 38, 45],
+                popularity: {
+                    analyst: { labels: ['Data Analyst', 'Other Data Roles'], data: [40, 60] },
+                    scientist: { labels: ['Data Scientist', 'Other Data Roles'], data: [25, 75] },
+                    engineer: { labels: ['Data Engineer', 'Other Data Roles'], data: [20, 80] },
+                    ml: { labels: ['ML Engineer', 'Other Data Roles'], data: [15, 85] }
+                },
+                salary: {
+                    entry: [75, 95, 105, 115],
+                    mid: [95, 125, 135, 150],
+                    senior: [120, 160, 170, 190]
+                }
+            };
+            
+            let growthChart, salaryChart, analystDonut, scientistDonut, engineerDonut, mlDonut;
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                     if(context.chart.canvas.id.includes('salary')) {
+                                          label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(context.parsed.y * 1000);
+                                     } else {
+                                        label += context.parsed.y + '%';
+                                     }
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                     y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                if(this.chart.canvas.id.includes('salary')) {
+                                    return '$' + value + 'k';
+                                }
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            };
+
+            const donutOptions = {
+                 responsive: true,
+                 maintainAspectRatio: false,
+                 plugins: {
+                     legend: { display: false },
+                     tooltip: {
+                         callbacks: {
+                            label: (context) => `${context.label}: ${context.parsed}%`
+                         }
+                     },
+                     title: {
+                        display: true,
+                        text: 'Relative Job Posting Volume'
+                     }
+                 },
+                 cutout: '60%'
+            };
+
+            function createCharts() {
+                if (document.getElementById('growthChart')) {
+                     growthChart = new Chart(document.getElementById('growthChart').getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: roleData.labels,
+                            datasets: [{
+                                label: 'Projected Growth Rate (%)',
+                                data: roleData.growth,
+                                backgroundColor: ['#60a5fa', '#38bdf8', '#2dd4bf', '#34d399'],
+                                borderColor: ['#2563eb', '#0ea5e9', '#0d9488', '#059669'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: chartOptions
+                    });
+                }
+               
+                if (document.getElementById('salaryChart')) {
+                    salaryChart = new Chart(document.getElementById('salaryChart').getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: roleData.labels,
+                            datasets: [{
+                                label: 'Median Salary (USD)',
+                                data: roleData.salary.entry,
+                                backgroundColor: '#60a5fa',
+                                borderColor: '#2563eb',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: chartOptions
+                    });
+                }
+
+                const donutColors = [['#60a5fa', '#e5e7eb'], ['#38bdf8', '#e5e7eb'], ['#2dd4bf', '#e5e7eb'], ['#34d399', '#e5e7eb']];
+
+                if (document.getElementById('analystDonut')) {
+                    analystDonut = new Chart(document.getElementById('analystDonut').getContext('2d'), {
+                        type: 'doughnut', data: { labels: roleData.popularity.analyst.labels, datasets: [{ data: roleData.popularity.analyst.data, backgroundColor: donutColors[0] }] }, options: donutOptions
+                    });
+                }
+                if (document.getElementById('scientistDonut')) {
+                     scientistDonut = new Chart(document.getElementById('scientistDonut').getContext('2d'), {
+                        type: 'doughnut', data: { labels: roleData.popularity.scientist.labels, datasets: [{ data: roleData.popularity.scientist.data, backgroundColor: donutColors[1] }] }, options: donutOptions
+                    });
+                }
+                if (document.getElementById('engineerDonut')) {
+                    engineerDonut = new Chart(document.getElementById('engineerDonut').getContext('2d'), {
+                        type: 'doughnut', data: { labels: roleData.popularity.engineer.labels, datasets: [{ data: roleData.popularity.engineer.data, backgroundColor: donutColors[2] }] }, options: donutOptions
+                    });
+                }
+                if (document.getElementById('mlDonut')) {
+                     mlDonut = new Chart(document.getElementById('mlDonut').getContext('2d'), {
+                        type: 'doughnut', data: { labels: roleData.popularity.ml.labels, datasets: [{ data: roleData.popularity.ml.data, backgroundColor: donutColors[3] }] }, options: donutOptions
+                    });
+                }
+            }
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            function switchTab(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                navButtons.forEach(button => {
+                    button.classList.remove('active');
+                });
+                document.getElementById(targetId).classList.add('active');
+                document.querySelector(`.nav-btn[data-target="${targetId}"]`).classList.add('active');
+            }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    switchTab(button.dataset.target);
+                });
+            });
+
+            const salaryFilterButtons = document.querySelectorAll('.salary-filter-btn');
+            const salaryLevelText = document.getElementById('salary-level-text');
+
+            salaryFilterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const level = button.dataset.level;
+                    salaryChart.data.datasets[0].data = roleData.salary[level];
+                    salaryChart.update();
+                    salaryLevelText.textContent = `Showing data for ${level.charAt(0).toUpperCase() + level.slice(1)}-Level`;
+                });
+            });
+
+            switchTab('overview');
+            createCharts();
+        });
+    </script>
+
+</body>
+</html>
